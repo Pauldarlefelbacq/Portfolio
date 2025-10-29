@@ -2,23 +2,25 @@ import React, { useState } from 'react';
 import Contact from './Fenetres/Contact';
 import Apropos from './Fenetres/Apropos';
 import Projets from './Fenetres/Projets';
-import Notepad from './Fenetres/Notepad';
-import Calculator from './Fenetres/Calculator';
-import Arcade from './Fenetres/Arcade';
-import Icon from './assets/icon.svg';
+import Navbar from "./Components/Navbar"
+import Parametres from './Fenetres/Parametres';
+import Projetsnew from './Fenetres/Projets_new';
 
 const createWindowId = (prefix) => `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 
+//création des icones d'applicationgue
 const APPS = {
   about: { title: 'À propos', component: Apropos },
   projects: { title: 'Projets', component: Projets },
   contact: { title: 'Contact', component: Contact },
+  parametres: { title: 'Paramètres', component: Parametres}
 };
 
 const DESKTOP_ICONS = [
   { key: 'about', emoji: '👤', label: 'À propos de moi' },
   { key: 'projects', emoji: '🎯', label: 'Mes projets' },
-  { key: 'notepad', emoji: '📝', label: 'Notes rapides' },
+  { key: 'contact', emoji: '📝', label: 'Me contacter' },
+  { key: 'parametres', emoji: 'I', label: 'Paramètres' },
 ];
 
 
@@ -40,15 +42,15 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
       <div onMouseDown={onMouseDown} className="title-bar flex justify-between items-center bg-gray-100/80 backdrop-blur-sm px-4 py-3 cursor-move border-b border-gray-300/50 rounded-t-2xl">
         <span className="font-semibold text-sm text-gray-800">{title}</span>
         <div className="flex items-center gap-2">
-          <button 
-            onClick={onMaximise} 
+          <button
+            onClick={onMaximise}
             className="w-8 h-8 flex items-center justify-center hover:bg-gray-300/50 rounded-full transition-colors duration-150"
             title="Maximize"
           >
             <span className="text-gray-600 text-xs">□</span>
           </button>
-          <button 
-            onClick={onClose} 
+          <button
+            onClick={onClose}
             className="w-8 h-8 flex items-center justify-center hover:bg-red-500 hover:text-white rounded-full transition-colors duration-150"
             title="Close"
           >
@@ -84,7 +86,6 @@ const Desktop = () => {
         component: about.component,
       });
     }
-
     if (projects) {
       initialWindows.push({
         id: createWindowId('projects'),
@@ -101,12 +102,8 @@ const Desktop = () => {
   });
   const [fenetreQuiBouge, setFenetreQuiBouge] = useState(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const date = new Date();
-  let jour = date.getDate();
-  let mois = date.getMonth() + 1;
-  let annee = date.getFullYear();
-  const dateComplete = `${jour}/${mois}/${annee}`;
-  
+
+
   const handleOpenApp = (appKey) => {
     const app = apps[appKey];
     if (!app) return;
@@ -184,12 +181,12 @@ const Desktop = () => {
     setFenetreQuiBouge(null);
   };
 
-//affichage de tout ça
+  //affichage de tout ça
   return (
-    <div 
-      className="desktop relative w-screen h-screen bg-gradient-to-tr from-green-400 via-teal-500 to-blue-600 overflow-hidden"
-      onMouseMove={handleMouseMove} 
-      onMouseUp={handleMouseUp} 
+    <div
+      className="desktop w-screen h-screen bg-[url(./assets/bureau_BG.webp)] bg-cover overflow-hidden"
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
       <div className="absolute inset-0 pointer-events-none">
@@ -197,7 +194,7 @@ const Desktop = () => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
       </div>
 
-      <div className="absolute top-8 left-8 flex flex-col gap-6 z-10">
+      <div className="absolute top-8 left-8 flex flex-col gap-6 z-10 ">
         {desktopIcons.map(icon => (
           <button
             key={icon.key}
@@ -205,7 +202,7 @@ const Desktop = () => {
             onClick={() => handleOpenApp(icon.key)}
           >
             <div className="text-4xl">{icon.emoji}</div>
-            <span className="text-white text-xs font-medium text-center drop-shadow-lg">{icon.label}</span>
+            <span className="text-white text-xs font-medium text-center drop-shadow-lg hover:font-bold">{icon.label}</span>
           </button>
         ))}
       </div>
@@ -227,38 +224,8 @@ const Desktop = () => {
           </Window>
         );
       })}
+      <Navbar handleOpenApp={handleOpenApp} />
 
-      <div className="fixed bottom-0 left-0 right-0 h-16 bg-black/30 backdrop-blur-xl shadow-2xl z-50 flex items-center justify-between px-6">
-        <a href="/"><img src={Icon} alt="Icone marquée Paul.DF" className="fill-white" /></a>
-        
-        <div className="flex items-center gap-6 ml-12">
-          <button className="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200" onClick={() => handleOpenApp('projects')}>
-            Récent
-          </button>
-          <button className="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200" onClick={() => handleOpenApp('about')}>
-            Accueil
-          </button>
-          <button className="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200" onClick={() => handleOpenApp('about')}>
-            À propos
-          </button>
-          <button className="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200" onClick={() => handleOpenApp('projects')}>
-            Projets
-          </button>
-          <button className="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200"
-          onClick={() => handleOpenApp('contact')}>
-            Me contacter
-          </button>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <button className="text-white/80 hover:text-white text-xl transition-colors duration-200">
-            ⚙️
-          </button>
-          <div className="text-white/90 text-sm font-medium">
-            {dateComplete}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

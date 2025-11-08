@@ -1,4 +1,4 @@
-import Icon from '../assets/icon.svg';
+import Icon from '../assets/icon.svg?react';
 import Settings from "../assets/settings.svg?react";
 
 export default function Navbar({ handleOpenApp }) {
@@ -10,7 +10,7 @@ export default function Navbar({ handleOpenApp }) {
 
     return (
         <div className="fixed bottom-0 left-0 right-0 h-16 bg-black/30 backdrop-blur-xl shadow-2xl z-50 flex items-center justify-between px-6 ">
-            <a href="/"><img src={Icon} alt="Icone marquée Paul.DF" className="fill-white" /></a>
+            <a href="/"><Icon alt="Icone marquée Paul.DF" className="[&_*]:fill-white" /></a>
 
             <div className="max-md:hidden flex items-center gap-6 ml-12 *:border *:border-black/30 *:p-2 *:rounded-lg *:bg-white/80 *:hover:drop-shadow-md *:hover:drop-shadow-blue-300 *:transition-all">
                 <button className="text-black/80 hover:text-black text-sm font-medium transition-colors duration-200" onClick={() => handleOpenApp('projects')}>

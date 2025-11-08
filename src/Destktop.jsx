@@ -5,6 +5,8 @@ import Projets from './Fenetres/Projets';
 import Navbar from "./Components/Navbar"
 import Parametres from './Fenetres/Parametres';
 import Projetsnew from './Fenetres/Projets_new';
+import Projet from './Components/Projet';
+import Corbeille from './Fenetres/Corbeille'
 
 const createWindowId = (prefix) => `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 
@@ -13,7 +15,8 @@ const APPS = {
   about: { title: 'À propos', component: Apropos },
   projects: { title: 'Projets', component: Projets },
   contact: { title: 'Contact', component: Contact },
-  parametres: { title: 'Paramètres', component: Parametres}
+  parametres: { title: 'Paramètres', component: Parametres},
+  corbeille: { title: 'Corbeille', component: Corbeille },
 };
 
 const DESKTOP_ICONS = [
@@ -21,6 +24,7 @@ const DESKTOP_ICONS = [
   { key: 'projects', emoji: '🎯', label: 'Mes projets' },
   { key: 'contact', emoji: '📝', label: 'Me contacter' },
   { key: 'parametres', emoji: 'I', label: 'Paramètres' },
+  { key: 'corbeille', emoji: 'C', label: 'Corbeille' },
 ];
 
 
@@ -31,7 +35,7 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
       className={
         isMaximised
           ? "fixed flex flex-col bg-white/90 backdrop-blur-2xl border border-gray-300/50 shadow-2xl transition-all duration-200 top-0 left-0 w-screen h-screen rounded-none z-40"
-          : `fixed flex flex-col bg-white/90 backdrop-blur-2xl border border-gray-300/50 shadow-2xl rounded-2xl transition-all duration-200 w-[720px] h-[520px] z-40`
+          : `fixed flex flex-col bg-white/90 backdrop-blur-2xl border border-gray-300/50 shadow-2xl rounded-2xl transition-all duration-200 w-[90vw] h-[80vh] max-w-[1200px] max-h-[800px] min-w-[320px] min-h-[400px] z-40`
       }
       style={
         isMaximised
@@ -70,10 +74,20 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
 const Desktop = () => {
   const apps = APPS;
   const desktopIcons = DESKTOP_ICONS;
+  
+  // Fonction pour calculer la position centrée
+  const getCenteredPosition = () => {
+    if (window.innerWidth < 768) { // Mobile
+      return { x: '5vw', y: '10vh' };
+    }
+    return null; // Desktop: utiliser les positions fixes
+  };
+
   const [openWindows, setOpenWindows] = useState(() => {
     const initialWindows = [];
     const about = apps.about;
     const projects = apps.projects;
+    const centeredPos = getCenteredPosition();
 
     if (about) {
       initialWindows.push({
@@ -81,8 +95,8 @@ const Desktop = () => {
         appKey: 'about',
         title: about.title,
         isMaximised: false,
-        x: '140px',
-        y: '100px',
+        x: centeredPos ? centeredPos.x : '140px',
+        y: centeredPos ? centeredPos.y : '100px',
         component: about.component,
       });
     }
@@ -92,8 +106,8 @@ const Desktop = () => {
         appKey: 'projects',
         title: projects.title,
         isMaximised: false,
-        x: '260px',
-        y: '220px',
+        x: centeredPos ? centeredPos.x : '260px',
+        y: centeredPos ? '15vh' : '220px',
         component: projects.component,
       });
     }
@@ -115,15 +129,34 @@ const Desktop = () => {
         return [...others, existing];
       }
 
+      const isMobile = window.innerWidth < 768;
       const offsetShift = prev.length * 36;
       const newWindow = {
         id: createWindowId(appKey),
         appKey,
         title: app.title,
         isMaximised: false,
-        x: `${140 + offsetShift}px`,
-        y: `${100 + offsetShift}px`,
+        x: isMobile ? '5vw' : `${140 + offsetShift}px`,
+        y: isMobile ? `${10 + offsetShift * 0.5}vh` : `${100 + offsetShift}px`,
         component: app.component,
+      };
+
+      return [...prev, newWindow];
+    });
+  };
+
+  const handleOpenProjet = (projet) => {
+    setOpenWindows(prev => {
+      const isMobile = window.innerWidth < 768;
+      const offsetShift = prev.length * 36;
+      const newWindow = {
+        id: createWindowId('projet'),
+        appKey: `projet-${projet.id}`,
+        title: projet.nom,
+        isMaximised: false,
+        x: isMobile ? '5vw' : `${140 + offsetShift}px`,
+        y: isMobile ? `${10 + offsetShift * 0.5}vh` : `${100 + offsetShift}px`,
+        component: () => <Projet projet={projet} />,
       };
 
       return [...prev, newWindow];
@@ -184,12 +217,12 @@ const Desktop = () => {
   //affichage de tout ça
   return (
     <div
-      className="desktop w-screen h-screen bg-[url(./assets/bureau_BG.webp)] bg-cover overflow-hidden"
+      className="desktop w-screen h-screen bg-[url(./assets/bureau_BG.webp)] bg-cover overflow-hidden relative"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 blur-3xl rounded-full -translate-x-1/2 translate-y-1/2"></div>
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
       </div>
@@ -220,7 +253,11 @@ const Desktop = () => {
             onMaximise={() => handleMaximiseApp(win.id)}
             onMouseDown={(e) => handleMouseDown(e, win.id)}
           >
-            <Content />
+            {win.appKey === 'projects' || win.appKey === 'corbeille' ? (
+              <Content onOpenProjet={handleOpenProjet} />
+            ) : (
+              <Content />
+            )}
           </Window>
         );
       })}

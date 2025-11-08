@@ -9,6 +9,7 @@
 @layer base {
     *{
         font-family: var(--font-ubuntu);
+        scroll-behavior: smooth
     };
 
     h1, h2, h3{

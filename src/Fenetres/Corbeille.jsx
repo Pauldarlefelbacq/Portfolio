@@ -1,11 +1,10 @@
 import Filter from "../assets/filter.svg?react";
 
-import { getAllProjets } from "../lib/backend.mjs";
-const projets = await getAllProjets();
+import { getAllProjetsCorbeille } from "../lib/backend.mjs";
 import { useEffect, useState } from 'react';
 
 
-const Projets = ({ onOpenProjet }) => {
+const Corbeille = ({ onOpenProjet }) => {
     const [focusIndex, setFocusIndex] = useState(0);
     
     const [projets, setprojets] = useState([]);
@@ -16,7 +15,6 @@ const Projets = ({ onOpenProjet }) => {
     const [selectedTechs, setSelectedTechs] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
     
-    // Récupérer toutes les technologies et tags uniques
     const allTechs = [...new Set(projets.flatMap(p => p.techs || []))];
     const allTags = [...new Set(projets.flatMap(p => p.tags || []))];
     
@@ -51,7 +49,7 @@ const Projets = ({ onOpenProjet }) => {
     useEffect(() => {
         const fetchProjets = async () => {
             try {
-                const listeProjets = await getAllProjets();
+                const listeProjets = await getAllProjetsCorbeille();
                 
                 setprojets(listeProjets); 
             } catch (err) {
@@ -215,4 +213,4 @@ const Projets = ({ onOpenProjet }) => {
     );
 };
 
-export default Projets;
+export default Corbeille;

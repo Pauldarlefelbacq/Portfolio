@@ -1,0 +1,87 @@
+import Github from "../assets/github.svg?react"
+import { useState } from 'react';
+
+const Projet = ({ projet }) => {
+    const [lightboxImage, setLightboxImage] = useState(null);
+
+    if (!projet) {
+        return <p>Aucun projet sélectionné</p>;
+    }
+
+    return (
+        <div className="p-4 flex gap-4 h-full overflow-hidden">
+            {/* Lightbox */}
+            {lightboxImage && (
+                <div 
+                    className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+                    onClick={() => setLightboxImage(null)}
+                >
+                    <img 
+                        src={lightboxImage} 
+                        alt={projet.nom}
+                        className="max-w-full max-h-full object-contain"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                    <button
+                        onClick={() => setLightboxImage(null)}
+                        className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300"
+                    >
+                        ✕
+                    </button>
+                </div>
+            )}
+
+            <div className="w-2/5 overflow-auto ">
+                {projet.imgR?.map((img, index) => (
+                    <img
+                    className="my-5 hover:translate-y-2 transition-all cursor-pointer"
+                    key={index} 
+                    src={img} 
+                    alt={projet.nom}
+                    onClick={() => setLightboxImage(img)} />
+                ))}
+            </div>
+            <div className="w-3/5 overflow-auto">
+                <div className="flex justify-between mb-3.5">
+                    <div className=" max-w-4/10">
+                        <h2 className="text-2xl font-bold my-5">Technologies utilisées</h2>
+                        {projet.techs?.map((tech, idx) => (
+                            <span key={idx} className="inline-block bg-gray-200 rounded-full mb-5 px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+                                {tech}
+                            </span>
+                        ))}
+                    </div>
+                    <div className="text-end max-w-3/10">
+                        <h2 className="text-2xl font-bold my-5">Tags</h2>
+                        {projet.tags?.map((tag, idx) => (
+                            <span key={idx} className="inline-block bg-gray-200 rounded-full mb-5 px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+                <div className="flex">
+                    <a 
+                    className="p-2 mr-5 rounded-md bg-white drop-shadow-md/25 hover:drop-shadow-none hover:translate-y-1 transition-all hover:bg-blue-400 hover:text-white"
+                    href={projet.lien_site}>
+                        Retrouver ce projet
+                    </a>
+                    <a 
+                    href={projet.lien_github}>
+                        <Github className="size-10 hover:[&_*]:fill-blue-400 transition-all" />
+                    </a>
+                </div>
+                <article className="my-10">
+                    <h3 className="text-2xl font-medium">Contexte</h3>
+                    <p>{projet.contexte_fr}</p>
+                </article>
+                <article className="mb-10">
+                    <h3 className="text-2xl font-medium">Description</h3>
+                    <p>{projet.desc_fr}</p>
+                </article>
+            </div>
+        </div>
+    );
+};
+
+export default Projet;

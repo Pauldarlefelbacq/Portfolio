@@ -1,4 +1,7 @@
-import Github from "../assets/github.svg?react"
+import Github from "../assets/github.svg?react";
+import { getAllProjets } from "../lib/backend.mjs";
+const projets = await getAllProjets();
+
 
 export default function Projetsnew(){
     return(

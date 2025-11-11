@@ -27,15 +27,15 @@ const timeline = [
 const values = [
 	{
 		title: 'Curiosité',
-		description: 'Je décortique chaque interface pour comprendre ce qui la rend mémorable ou fluide.',
+		description: "Je cherche à toujours apprendre plus, rien n'est trop difficile à apprendre si on en a la volonté",
 	},
 	{
-		title: 'Empathie',
-		description: 'Chaque choix de design part d’une question : comment simplifier la vie de l’utilisateur ?'
+		title: 'Investissement',
+		description: "Je m'investis pleinement dans chaque projet peu importe le type, tout projet mérite d'être fait à 100%"
 	},
 	{
-		title: 'Storytelling',
-		description: 'J’aime embarquer l’utilisateur dans une narration claire, du micro-détail à l’expérience globale.',
+		title: 'Collaboration',
+		description: "Je privilégie le travail d'équipe et l'échange d'idées pour élargir un maximum l'horizon de mes pensées",
 	},
 ];
 
@@ -161,14 +161,11 @@ const Apropos = () => {
 				))}
 			</div>
 
-			{/* Vue mobile - avec tabs */}
 			<section className="flex-1 overflow-y-auto rounded-3xl bg-white/60 p-6 shadow-lg backdrop-blur md:hidden">
 				{content}
 			</section>
 
-			{/* Vue desktop - tout affiché en colonnes */}
 			<div className="hidden flex-1 grid-cols-3 gap-4 overflow-y-auto md:grid">
-				{/* Colonne Parcours */}
 				<section className="rounded-3xl bg-white/60 p-6 shadow-lg backdrop-blur">
 					<img src={Perso} alt="Photo de présentation" className="mx-auto mb-4 h-32 w-32 rounded-full object-cover shadow-lg" />
 					<h3 className="mb-4 text-lg font-semibold text-gray-800">Parcours</h3>
@@ -192,7 +189,6 @@ const Apropos = () => {
 					</div>
 				</section>
 
-				{/* Colonne Compétences */}
 				<section className="rounded-3xl bg-white/60 p-6 shadow-lg backdrop-blur overflow-y-auto">
 					<h3 className="mb-4 text-lg font-semibold text-gray-800">Compétences</h3>
 					<div className="grid gap-6">
@@ -222,7 +218,6 @@ const Apropos = () => {
 					</div>
 				</section>
 
-				{/* Colonne Valeurs */}
 				<section className="rounded-3xl bg-white/60 p-6 shadow-lg backdrop-blur">
 					<h3 className="mb-4 text-lg font-semibold text-gray-800">Valeurs</h3>
 					<div className="grid gap-4">

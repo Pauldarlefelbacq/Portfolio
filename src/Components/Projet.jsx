@@ -80,10 +80,12 @@ const Projet = ({ projet }) => {
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     <a 
                     className="p-2 rounded-md bg-white drop-shadow-md hover:drop-shadow-none hover:translate-y-1 transition-all hover:bg-blue-400 hover:text-white w-full sm:w-auto text-center"
+                    target="_blank"
                     href={projet.lien_site}>
                         Retrouver ce projet
                     </a>
                     <a 
+                    target="_blank"
                     href={projet.lien_github}>
                         <Github className="size-10 hover:[&_*]:fill-blue-400 transition-all" />
                     </a>

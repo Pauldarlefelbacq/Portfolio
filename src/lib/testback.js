@@ -1,3 +1,3 @@
-import { getAllProjets } from "./backend.mjs";
+import { getAllSkills } from "./backend.mjs";
 
-console.log(await getAllProjets());
+console.log(await getAllSkills());

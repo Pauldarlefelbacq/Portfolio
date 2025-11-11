@@ -6,7 +6,8 @@ import Navbar from "./Components/Navbar"
 import Parametres from './Fenetres/Parametres';
 import Projetsnew from './Fenetres/Projets_new';
 import Projet from './Components/Projet';
-import Corbeille from './Fenetres/Corbeille'
+import Corbeille from './Fenetres/Corbeille';
+import Terminal from './Fenetres/Terminal';
 
 const createWindowId = (prefix) => `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 
@@ -15,6 +16,7 @@ const APPS = {
   about: { title: 'À propos', component: Apropos },
   projects: { title: 'Projets', component: Projets },
   contact: { title: 'Contact', component: Contact },
+  terminal: { title: 'Terminal', component: Terminal },
   parametres: { title: 'Paramètres', component: Parametres},
   corbeille: { title: 'Corbeille', component: Corbeille },
 };
@@ -23,6 +25,7 @@ const DESKTOP_ICONS = [
   { key: 'about', emoji: '👤', label: 'À propos de moi' },
   { key: 'projects', emoji: '🎯', label: 'Mes projets' },
   { key: 'contact', emoji: '📝', label: 'Me contacter' },
+  { key: 'terminal', emoji: '⌨️', label: 'Terminal' },
   { key: 'parametres', emoji: 'I', label: 'Paramètres' },
   { key: 'corbeille', emoji: 'C', label: 'Corbeille' },
 ];
@@ -228,7 +231,7 @@ const Desktop = () => {
       </div>
 
       <div className="absolute top-8 left-8 flex flex-col gap-6 z-10 ">
-        {desktopIcons.map(icon => (
+        {desktopIcons.filter(icon => icon.key !== 'terminal').map(icon => (
           <button
             key={icon.key}
             className="icon flex flex-col items-center gap-2 p-4 w-28 bg-white/20 backdrop-blur-md rounded-2xl cursor-pointer hover:bg-white/30 hover:scale-105 transition-all duration-200 shadow-xl"
@@ -238,6 +241,17 @@ const Desktop = () => {
             <span className="text-white text-xs font-medium text-center drop-shadow-lg hover:font-bold">{icon.label}</span>
           </button>
         ))}
+      </div>
+
+      {/* Terminal icône - positionné en bas à droite */}
+      <div className="absolute bottom-24 right-8 z-10">
+        <button
+          className="icon flex flex-col items-center gap-2 p-4 w-28 bg-gray-900/80 backdrop-blur-md rounded-2xl cursor-pointer hover:bg-gray-800/90 hover:scale-105 transition-all duration-200 shadow-2xl border border-green-500/30"
+          onClick={() => handleOpenApp('terminal')}
+        >
+          <div className="text-4xl">⌨️</div>
+          <span className="text-green-400 text-xs font-medium text-center drop-shadow-lg hover:font-bold">Terminal</span>
+        </button>
       </div>
 
       {openWindows.map(win => {

@@ -39,8 +39,18 @@ jobs:
           overwrite: true
           debug: true
       
-      - name: Install production dependencies on VPS
+      - name: Permisions preparations
         uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22004
+          script: |
+            sudo chmod -R 777 /var/www/portfolio
+
+      - name: Restore secure permissions
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
@@ -50,5 +60,5 @@ jobs:
             sudo chown -R www-data:www-data /var/www/portfolio/assets/index-BZwXifzf.js
             sudo chown -R www-data:www-data /var/www/portfolio/assets/index-CUnfQuxs.css
             sudo chown -R www-data:www-data /var/www/portfolio/assets/index-bgLTm4gS.js
-            sudo chmod 755 /var/www/portfolio/assets
+            sudo chmod -R 755 /var/www/portfolio
             sudo systemctl restart apache2

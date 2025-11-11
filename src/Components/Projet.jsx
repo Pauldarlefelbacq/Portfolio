@@ -9,7 +9,7 @@ const Projet = ({ projet }) => {
     }
 
     return (
-        <div className="p-4 flex gap-4 h-full overflow-hidden">
+        <div className="p-4 flex flex-col md:flex-row gap-4 h-full overflow-auto">
             {/* Lightbox */}
             {lightboxImage && (
                 <div 
@@ -31,7 +31,23 @@ const Projet = ({ projet }) => {
                 </div>
             )}
 
-            <div className="w-2/5 overflow-auto ">
+            {/* Mobile: Scrollable horizontal carousel */}
+            <div className="md:hidden w-full">
+                <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory">
+                    {projet.imgR?.map((img, index) => (
+                        <img
+                            className="flex-shrink-0 w-4/5 h-64 object-cover rounded-lg cursor-pointer snap-center"
+                            key={index} 
+                            src={img} 
+                            alt={projet.nom}
+                            onClick={() => setLightboxImage(img)} 
+                        />
+                    ))}
+                </div>
+            </div>
+
+            {/* Desktop: Image list */}
+            <div className="hidden md:block w-2/5 overflow-auto ">
                 {projet.imgR?.map((img, index) => (
                     <img
                     className="my-5 hover:translate-y-2 transition-all cursor-pointer"
@@ -41,9 +57,10 @@ const Projet = ({ projet }) => {
                     onClick={() => setLightboxImage(img)} />
                 ))}
             </div>
-            <div className="w-3/5 overflow-auto">
-                <div className="flex justify-between mb-3.5">
-                    <div className=" max-w-4/10">
+
+            <div className="w-full md:w-3/5">
+                <div className="flex flex-col md:flex-row justify-between mb-3.5 gap-4">
+                    <div className="w-full md:max-w-[40%]">
                         <h2 className="text-2xl font-bold my-5">Technologies utilisées</h2>
                         {projet.techs?.map((tech, idx) => (
                             <span key={idx} className="inline-block bg-gray-200 rounded-full mb-5 px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
@@ -51,7 +68,7 @@ const Projet = ({ projet }) => {
                             </span>
                         ))}
                     </div>
-                    <div className="text-end max-w-3/10">
+                    <div className="w-full md:text-end md:max-w-[30%]">
                         <h2 className="text-2xl font-bold my-5">Tags</h2>
                         {projet.tags?.map((tag, idx) => (
                             <span key={idx} className="inline-block bg-gray-200 rounded-full mb-5 px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
@@ -60,9 +77,9 @@ const Projet = ({ projet }) => {
                         ))}
                     </div>
                 </div>
-                <div className="flex">
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     <a 
-                    className="p-2 mr-5 rounded-md bg-white drop-shadow-md/25 hover:drop-shadow-none hover:translate-y-1 transition-all hover:bg-blue-400 hover:text-white"
+                    className="p-2 rounded-md bg-white drop-shadow-md hover:drop-shadow-none hover:translate-y-1 transition-all hover:bg-blue-400 hover:text-white w-full sm:w-auto text-center"
                     href={projet.lien_site}>
                         Retrouver ce projet
                     </a>

@@ -63,7 +63,6 @@ const Corbeille = ({ onOpenProjet }) => {
         fetchProjets();
     }, []); 
 
-    // Réinitialiser focusIndex quand la liste filtrée change
     useEffect(() => {
         if (focusIndex >= projetsFiltre.length) {
             setFocusIndex(0);
@@ -80,25 +79,23 @@ const Corbeille = ({ onOpenProjet }) => {
 
     return (
         <div>
-            <span className="m-10 h-full flex justify-baseline">
+            <span className="m-4 md:m-10 flex flex-col sm:flex-row gap-4 items-center">
                 <input 
                     id='search'
                     name='search'
                     placeholder='Rechercher'
-                    className="bg-white drop-shadow-md p-4 mx-5 w-2/5 rounded-md focus:translate-y-1 focus:drop-shadow-none transition-all"
+                    className="bg-white drop-shadow-md p-4 w-full sm:w-2/3 md:w-2/5 rounded-md focus:translate-y-1 focus:drop-shadow-none transition-all"
                     type="text" 
                     value={search}
                     onChange={handleChange} 
                 />
-                <div>
-                    <button 
-                        className="w-fit content-between my-auto"
-                        onClick={() => setShowFilterOverlay(true)}
-                    >
-                        <Filter className="size-10" />
-                    </button>
-                    <p>Filtrer</p>
-                </div>
+                <button 
+                    className="flex items-center gap-2 px-4 py-2 bg-white drop-shadow-md rounded-md hover:bg-gray-50 transition-all"
+                    onClick={() => setShowFilterOverlay(true)}
+                >
+                    <Filter className="size-6 md:size-10" />
+                    <span className="font-medium">Filtrer</span>
+                </button>
             </span>
 
             {showFilterOverlay && (
@@ -176,7 +173,41 @@ const Corbeille = ({ onOpenProjet }) => {
                 </div>
             )}
 
-            <div className="flex p-4 items-center h-full">
+            {/* Mobile: Vertical cards */}
+            <div className="md:hidden p-4 overflow-auto h-full">
+                <div className="grid grid-cols-1 gap-4">
+                    {projetsFiltre.map((project, index) => (
+                        <div 
+                            key={project.id} 
+                            onClick={() => {
+                                setFocusIndex(index);
+                                if (onOpenProjet) {
+                                    onOpenProjet(project);
+                                }
+                            }}
+                            className="bg-white rounded-lg drop-shadow-md hover:drop-shadow-lg transition-all p-4 cursor-pointer"
+                        >
+                            {project.imgR?.[0] && (
+                                <img className="w-full h-48 object-cover rounded-md mb-3" src={project.imgR[0]} alt={project.nom} />
+                            )}
+                            <div className="flex justify-between items-center mb-2">
+                                <h2 className="text-xl font-bold">{project.nom}</h2>
+                                <span className="text-sm text-gray-600">{project.date.slice(0, 7).replace("-", "/")}</span>
+                            </div>
+                            <div className="flex flex-wrap gap-2 mt-3">
+                                {project.techs?.map((tech, idx) => (
+                                    <span key={idx} className="inline-block bg-gray-400/70 rounded-full px-3 py-1 text-xs font-semibold text-white">
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Desktop: Split view */}
+            <div className="hidden md:flex p-4 items-center h-full">
                 <div className="w-2/3 overflow-auto">
                     {projetsFiltre.map((project, index) => (
                         <div 

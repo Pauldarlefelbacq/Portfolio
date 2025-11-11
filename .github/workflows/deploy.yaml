@@ -47,4 +47,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22004
           script: |
+            sudo chown -R www-data:www-data /var/www/portfolio/assets/index-BZwXifzf.js
+            sudo chown -R www-data:www-data /var/www/portfolio/assets/index-CUnfQuxs.css
+            sudo chown -R www-data:www-data /var/www/portfolio/assets/index-bgLTm4gS.js
+            sudo chmod 755 /var/www/portfolio/assets
             sudo systemctl restart apache2

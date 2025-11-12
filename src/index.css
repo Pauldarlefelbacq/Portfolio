@@ -15,4 +15,46 @@
     h1, h2, h3{
         font-weight: medium;
     };
+
+    /* Variables de couleur pour le thème */
+    :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f9fafb;
+        --bg-tertiary: #f3f4f6;
+        --text-primary: #111827;
+        --text-secondary: #374151;
+        --text-tertiary: #6b7280;
+        --border-color: #e5e7eb;
+        --icon-bg: rgba(255, 255, 255, 0.2);
+        --icon-bg-hover: rgba(255, 255, 255, 0.3);
+        --window-bg: rgba(255, 255, 255, 0.9);
+        --window-titlebar: rgba(243, 244, 246, 0.8);
+        --desktop-gradient: rgba(255, 255, 255, 0.1);
+        --desktop-overlay: rgba(0, 0, 0, 0);
+    }
+
+    .dark {
+        --bg-primary: #1f2937;
+        --bg-secondary: #111827;
+        --bg-tertiary: #374151;
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --text-tertiary: #9ca3af;
+        --border-color: #4b5563;
+        --icon-bg: rgba(31, 41, 55, 0.7);
+        --icon-bg-hover: rgba(55, 65, 81, 0.8);
+        --window-bg: rgba(31, 41, 55, 0.95);
+        --window-titlebar: rgba(17, 24, 39, 0.9);
+        --desktop-gradient: rgba(55, 65, 81, 0.2);
+        --desktop-overlay: rgba(0, 0, 0, 0.4);
+    }
 }
+
+/* Classes utilitaires pour faciliter l'utilisation */
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-tertiary { background-color: var(--bg-tertiary); }
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.border-theme { border-color: var(--border-color); }

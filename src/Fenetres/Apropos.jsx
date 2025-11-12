@@ -74,8 +74,8 @@ const Apropos = () => {
 				return (
 					<div className="grid gap-6">
 						{Object.entries(skillsBySpe).map(([spe, speSkills]) => (
-							<div key={spe} className="rounded-2xl bg-white/80 p-4 shadow">
-								<h3 className="mb-4 text-lg font-semibold capitalize text-gray-800">{spe}</h3>
+							<div key={spe} className="rounded-2xl p-4 shadow transition-colors duration-300" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+								<h3 className="mb-4 text-lg font-semibold capitalize transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>{spe}</h3>
 								<div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
 									{speSkills.map((skill) => (
 										<div

@@ -102,7 +102,7 @@ const Lock = () => {
 									onMouseDown={handleSliderStart}
 									onTouchStart={handleSliderStart}
 								>
-									<span className='text-2xl'>→</span>
+									<span className='text-2xl font-bold'>&gt;</span>
 								</div>
 							</div>
 							

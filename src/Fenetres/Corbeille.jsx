@@ -84,13 +84,22 @@ const Corbeille = ({ onOpenProjet }) => {
                     id='search'
                     name='search'
                     placeholder='Rechercher'
-                    className="bg-white drop-shadow-md p-4 w-full sm:w-2/3 md:w-2/5 rounded-md focus:translate-y-1 focus:drop-shadow-none transition-all"
+                    className="drop-shadow-md p-4 w-full sm:w-2/3 md:w-2/5 rounded-md focus:translate-y-1 focus:drop-shadow-none transition-all"
+                    style={{
+                        backgroundColor: 'var(--bg-primary)',
+                        color: 'var(--text-primary)',
+                        borderColor: 'var(--border-color)'
+                    }}
                     type="text" 
                     value={search}
                     onChange={handleChange} 
                 />
                 <button 
-                    className="flex items-center gap-2 px-4 py-2 bg-white drop-shadow-md rounded-md hover:bg-gray-50 transition-all"
+                    className="flex items-center gap-2 px-4 py-2 drop-shadow-md rounded-md hover:opacity-80 transition-all"
+                    style={{
+                        backgroundColor: 'var(--bg-primary)',
+                        color: 'var(--text-primary)'
+                    }}
                     onClick={() => setShowFilterOverlay(true)}
                 >
                     <Filter className="size-6 md:size-10" />
@@ -104,21 +113,23 @@ const Corbeille = ({ onOpenProjet }) => {
                     onClick={() => setShowFilterOverlay(false)}
                 >
                     <div 
-                        className="bg-white rounded-2xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-auto shadow-2xl"
+                        className="rounded-2xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-auto shadow-2xl transition-colors duration-300"
                         onClick={(e) => e.stopPropagation()}
+                        style={{ backgroundColor: 'var(--bg-primary)' }}
                     >
                         <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-bold">Filtrer les projets</h2>
+                            <h2 className="text-2xl font-bold transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Filtrer les projets</h2>
                             <button
                                 onClick={() => setShowFilterOverlay(false)}
-                                className="text-gray-500 hover:text-gray-700 text-2xl"
+                                className="hover:opacity-70 text-2xl transition-colors duration-300"
+                                style={{ color: 'var(--text-secondary)' }}
                             >
                                 ✕
                             </button>
                         </div>
 
                         <div className="mb-6">
-                            <h3 className="text-lg font-semibold mb-3">Technologies</h3>
+                            <h3 className="text-lg font-semibold mb-3 transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Technologies</h3>
                             <div className="flex flex-wrap gap-2">
                                 {allTechs.map((tech) => (
                                     <button
@@ -127,8 +138,12 @@ const Corbeille = ({ onOpenProjet }) => {
                                         className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                                             selectedTechs.includes(tech)
                                                 ? 'bg-blue-500 text-white'
-                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                : ''
                                         }`}
+                                        style={!selectedTechs.includes(tech) ? {
+                                            backgroundColor: 'var(--bg-secondary)',
+                                            color: 'var(--text-primary)'
+                                        } : {}}
                                     >
                                         {tech}
                                     </button>
@@ -137,7 +152,7 @@ const Corbeille = ({ onOpenProjet }) => {
                         </div>
 
                         <div className="mb-6">
-                            <h3 className="text-lg font-semibold mb-3">Tags</h3>
+                            <h3 className="text-lg font-semibold mb-3 transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Tags</h3>
                             <div className="flex flex-wrap gap-2">
                                 {allTags.map((tag) => (
                                     <button
@@ -146,8 +161,12 @@ const Corbeille = ({ onOpenProjet }) => {
                                         className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                                             selectedTags.includes(tag)
                                                 ? 'bg-green-500 text-white'
-                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                : ''
                                         }`}
+                                        style={!selectedTags.includes(tag) ? {
+                                            backgroundColor: 'var(--bg-secondary)',
+                                            color: 'var(--text-primary)'
+                                        } : {}}
                                     >
                                         {tag}
                                     </button>
@@ -158,7 +177,11 @@ const Corbeille = ({ onOpenProjet }) => {
                         <div className="flex justify-between gap-4">
                             <button
                                 onClick={resetFilters}
-                                className="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg font-semibold transition-colors"
+                                className="px-6 py-2 rounded-lg font-semibold transition-all hover:opacity-80"
+                                style={{
+                                    backgroundColor: 'var(--bg-secondary)',
+                                    color: 'var(--text-primary)'
+                                }}
                             >
                                 Réinitialiser
                             </button>
@@ -190,9 +213,9 @@ const Corbeille = ({ onOpenProjet }) => {
                             {project.imgR?.[0] && (
                                 <img className="w-full h-48 object-cover rounded-md mb-3" src={project.imgR[0]} alt={project.nom} />
                             )}
-                            <div className="flex justify-between items-center mb-2">
-                                <h2 className="text-xl font-bold">{project.nom}</h2>
-                                <span className="text-sm text-gray-600">{project.date.slice(0, 7).replace("-", "/")}</span>
+                                                        <div className="flex justify-between items-center mb-2">
+                                <h2 className="text-xl font-bold transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>{project.nom}</h2>
+                                <span className="text-sm transition-colors duration-300" style={{ color: 'var(--text-secondary)' }}>{project.date.slice(0, 7).replace("-", "/")}</span>
                             </div>
                             <div className="flex flex-wrap gap-2 mt-3">
                                 {project.techs?.map((tech, idx) => (
@@ -218,11 +241,15 @@ const Corbeille = ({ onOpenProjet }) => {
                                     onOpenProjet(project);
                                 }
                             }}
-                            style={{ fontWeight: focusIndex === index ? 'bold' : 'normal' }}
-                            className="flex justify-between cursor-pointer bg-white drop-shadow-sm hover:bg-gray-100 hover:drop-shadow-none hover:translate-1 transition-all p-2 my-12 rounded"
+                            style={{ 
+                                fontWeight: focusIndex === index ? 'bold' : 'normal',
+                                backgroundColor: 'var(--bg-primary)',
+                                borderColor: 'var(--border-color)'
+                            }}
+                            className="flex justify-between cursor-pointer drop-shadow-sm hover:drop-shadow-none hover:translate-1 transition-all p-2 my-12 rounded border"
                         >
-                            <h2 className="text-3xl">{project.nom}</h2>
-                            <h3>{project.date.slice(0, 7).replace("-", "/")}</h3>
+                            <h2 className="text-3xl transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>{project.nom}</h2>
+                            <h3 className="transition-colors duration-300" style={{ color: 'var(--text-secondary)' }}>{project.date.slice(0, 7).replace("-", "/")}</h3>
                         </div>
                     ))}
                 </div>

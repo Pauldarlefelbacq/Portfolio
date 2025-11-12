@@ -10,7 +10,6 @@ const Projet = ({ projet }) => {
 
     return (
         <div className="p-4 flex flex-col md:flex-row gap-4 h-full overflow-auto">
-            {/* Lightbox */}
             {lightboxImage && (
                 <div 
                     className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
@@ -31,7 +30,6 @@ const Projet = ({ projet }) => {
                 </div>
             )}
 
-            {/* Mobile: Scrollable horizontal carousel */}
             <div className="md:hidden w-full">
                 <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory">
                     {projet.imgR?.map((img, index) => (
@@ -46,7 +44,6 @@ const Projet = ({ projet }) => {
                 </div>
             </div>
 
-            {/* Desktop: Image list */}
             <div className="hidden md:block w-2/5 overflow-auto ">
                 {projet.imgR?.map((img, index) => (
                     <img
@@ -61,17 +58,25 @@ const Projet = ({ projet }) => {
             <div className="w-full md:w-3/5">
                 <div className="flex flex-col md:flex-row justify-between mb-3.5 gap-4">
                     <div className="w-full md:max-w-[40%]">
-                        <h2 className="text-2xl font-bold my-5">Technologies utilisées</h2>
+                        <h2 className="text-2xl font-bold my-5 transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Technologies utilisées</h2>
                         {projet.techs?.map((tech, idx) => (
-                            <span key={idx} className="inline-block bg-gray-200 rounded-full mb-5 px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+                            <span key={idx} className="inline-block rounded-full mb-5 px-3 py-1 text-sm font-semibold mr-2 transition-colors duration-300" 
+                            style={{ 
+                                backgroundColor: 'var(--bg-secondary)',
+                                color: 'var(--text-primary)'
+                            }}>
                                 {tech}
                             </span>
                         ))}
                     </div>
                     <div className="w-full md:text-end md:max-w-[30%]">
-                        <h2 className="text-2xl font-bold my-5">Tags</h2>
+                        <h2 className="text-2xl font-bold my-5 transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Tags</h2>
                         {projet.tags?.map((tag, idx) => (
-                            <span key={idx} className="inline-block bg-gray-200 rounded-full mb-5 px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+                            <span key={idx} className="inline-block rounded-full mb-5 px-3 py-1 text-sm font-semibold mr-2 transition-colors duration-300"
+                            style={{ 
+                                backgroundColor: 'var(--bg-secondary)',
+                                color: 'var(--text-primary)'
+                            }}>
                                 {tag}
                             </span>
                         ))}
@@ -79,7 +84,11 @@ const Projet = ({ projet }) => {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     <a 
-                    className="p-2 rounded-md bg-white drop-shadow-md hover:drop-shadow-none hover:translate-y-1 transition-all hover:bg-blue-400 hover:text-white w-full sm:w-auto text-center"
+                    className="p-2 rounded-md drop-shadow-md hover:drop-shadow-none hover:translate-y-1 transition-all hover:bg-blue-400 hover:text-white w-full sm:w-auto text-center"
+                    style={{
+                        backgroundColor: 'var(--bg-primary)',
+                        color: 'var(--text-primary)'
+                    }}
                     target="_blank"
                     href={projet.lien_site}>
                         Retrouver ce projet
@@ -91,12 +100,12 @@ const Projet = ({ projet }) => {
                     </a>
                 </div>
                 <article className="my-10">
-                    <h3 className="text-2xl font-medium">Contexte</h3>
-                    <p>{projet.contexte_fr}</p>
+                    <h3 className="text-2xl font-medium transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Contexte</h3>
+                    <p className="transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>{projet.contexte_fr}</p>
                 </article>
                 <article className="mb-10">
-                    <h3 className="text-2xl font-medium">Description</h3>
-                    <p>{projet.desc_fr}</p>
+                    <h3 className="text-2xl font-medium transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Description</h3>
+                    <p className="transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>{projet.desc_fr}</p>
                 </article>
             </div>
         </div>

@@ -509,7 +509,7 @@ const Terminal = () => {
 	};
 
 	return (
-		<div className="flex h-full flex-col bg-gray-900 p-4 font-mono text-sm">
+		<div className="flex h-full flex-col p-4 font-mono text-sm transition-colors duration-300" style={{ backgroundColor: '#1a1a1a', color: '#e5e5e5' }}>
 			<div className="flex-1 overflow-y-auto">
 				{history.map((entry, index) => (
 					<div key={index} className={`${getTypeColor(entry.type)} mb-1`}>
@@ -528,14 +528,15 @@ const Terminal = () => {
 					type={awaitingPassword ? 'password' : 'text'}
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
-					className="flex-1 bg-transparent text-white outline-none"
+					className="flex-1 bg-transparent outline-none"
+					style={{ color: '#ffffff' }}
 					autoFocus
 					spellCheck="false"
 				/>
 			</form>
 
 			{gameState.started && (
-				<div className="mt-2 flex items-center justify-between border-t border-gray-700 pt-2 text-xs">
+				<div className="mt-2 flex items-center justify-between pt-2 text-xs" style={{ borderTop: '1px solid #374151' }}>
 					<span className="text-blue-400">
 						[GAME] Actif | Score: {gameState.score}
 					</span>

@@ -6,7 +6,7 @@ import Navbar from "./Components/Navbar"
 import Parametres from './Fenetres/Parametres';
 import Projetsnew from './Fenetres/Projets_new';
 import Projet from './Components/Projet';
-import Corbeille from './Fenetres/Corbeille';
+import Corbeille from './Fenetres/Corbeille'
 import Terminal from './Fenetres/Terminal';
 
 const createWindowId = (prefix) => `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
@@ -25,10 +25,11 @@ const DESKTOP_ICONS = [
   { key: 'about', emoji: '👤', label: 'À propos de moi' },
   { key: 'projects', emoji: '🎯', label: 'Mes projets' },
   { key: 'contact', emoji: '📝', label: 'Me contacter' },
-  { key: 'terminal', emoji: '⌨️', label: 'Terminal' },
   { key: 'parametres', emoji: 'I', label: 'Paramètres' },
   { key: 'corbeille', emoji: 'C', label: 'Corbeille' },
 ];
+
+const TERMINAL_ICON = { key: 'terminal', emoji: '💻', label: 'Terminal' };
 
 
 //gestion des fenêtres
@@ -37,24 +38,25 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
     <div
       className={
         isMaximised
-          ? "fixed flex flex-col bg-white/90 backdrop-blur-2xl border border-gray-300/50 shadow-2xl transition-all duration-200 top-0 left-0 w-screen h-screen rounded-none z-40"
-          : `fixed flex flex-col bg-white/90 backdrop-blur-2xl border border-gray-300/50 shadow-2xl rounded-2xl transition-all duration-200 w-[90vw] h-[80vh] max-w-[1200px] max-h-[800px] min-w-[320px] min-h-[400px] z-40`
+          ? "fixed flex flex-col backdrop-blur-2xl border shadow-2xl transition-all duration-300 top-0 left-0 w-screen h-screen rounded-none z-40"
+          : `fixed flex flex-col backdrop-blur-2xl border shadow-2xl rounded-2xl transition-all duration-300 w-[90vw] h-[80vh] max-w-[1200px] max-h-[800px] min-w-[320px] min-h-[400px] z-40`
       }
-      style={
-        isMaximised
-          ? { top: 0, left: 0 }
-          : { top: positionY, left: positionX }
-      }
+      style={{
+        ...(isMaximised ? { top: 0, left: 0 } : { top: positionY, left: positionX }),
+        backgroundColor: 'var(--window-bg)',
+        borderColor: 'var(--border-color)'
+      }}
     >
-      <div onMouseDown={onMouseDown} className="title-bar flex justify-between items-center bg-gray-100/80 backdrop-blur-sm px-4 py-3 cursor-move border-b border-gray-300/50 rounded-t-2xl">
-        <span className="font-semibold text-sm text-gray-800">{title}</span>
+      <div onMouseDown={onMouseDown} className="title-bar flex justify-between items-center backdrop-blur-sm px-4 py-3 cursor-move border-b rounded-t-2xl transition-colors duration-300"
+           style={{ backgroundColor: 'var(--window-titlebar)', borderColor: 'var(--border-color)' }}>
+        <span className="font-semibold text-sm transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>{title}</span>
         <div className="flex items-center gap-2">
           <button
             onClick={onMaximise}
-            className="w-8 h-8 flex items-center justify-center hover:bg-gray-300/50 rounded-full transition-colors duration-150"
+            className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-150 hover:bg-gray-300/50 dark:hover:bg-gray-600/50"
             title="Maximize"
           >
-            <span className="text-gray-600 text-xs">□</span>
+            <span className="text-xs transition-colors duration-300" style={{ color: 'var(--text-secondary)' }}>□</span>
           </button>
           <button
             onClick={onClose}
@@ -66,7 +68,7 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
         </div>
       </div>
 
-      <div className="window-body p-4 flex-grow overflow-auto">
+      <div className="window-body p-4 flex-grow overflow-auto transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>
         {children}
       </div>
     </div>
@@ -89,7 +91,6 @@ const Desktop = () => {
   const [openWindows, setOpenWindows] = useState(() => {
     const initialWindows = [];
     const about = apps.about;
-    const projects = apps.projects;
     const centeredPos = getCenteredPosition();
 
     if (about) {
@@ -101,17 +102,6 @@ const Desktop = () => {
         x: centeredPos ? centeredPos.x : '140px',
         y: centeredPos ? centeredPos.y : '100px',
         component: about.component,
-      });
-    }
-    if (projects) {
-      initialWindows.push({
-        id: createWindowId('projects'),
-        appKey: 'projects',
-        title: projects.title,
-        isMaximised: false,
-        x: centeredPos ? centeredPos.x : '260px',
-        y: centeredPos ? '15vh' : '220px',
-        component: projects.component,
       });
     }
 
@@ -220,37 +210,51 @@ const Desktop = () => {
   //affichage de tout ça
   return (
     <div
-      className="desktop w-screen h-screen bg-[url(./assets/bureau_BG.webp)] bg-cover overflow-hidden relative"
+      className="desktop w-screen h-screen bg-[url(./assets/bureau_BG.webp)] bg-cover overflow-hidden relative transition-colors duration-500"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
+      
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 blur-3xl rounded-full -translate-x-1/2 translate-y-1/2"></div>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 blur-3xl rounded-full -translate-x-1/2 translate-y-1/2 transition-colors duration-500" 
+             style={{ backgroundColor: 'var(--desktop-gradient)' }}></div>
+        <div className="absolute top-0 right-0 w-96 h-96 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2 transition-colors duration-500"
+             style={{ backgroundColor: 'var(--desktop-gradient)' }}></div>
       </div>
 
       <div className="absolute top-8 left-8 flex flex-col gap-6 z-10 ">
-        {desktopIcons.filter(icon => icon.key !== 'terminal').map(icon => (
+        {desktopIcons.map(icon => (
           <button
             key={icon.key}
-            className="icon flex flex-col items-center gap-2 p-4 w-28 bg-white/20 backdrop-blur-md rounded-2xl cursor-pointer hover:bg-white/30 hover:scale-105 transition-all duration-200 shadow-xl"
+            className="icon flex flex-col items-center gap-2 p-4 w-28 backdrop-blur-md rounded-2xl cursor-pointer hover:scale-105 transition-all duration-200 shadow-xl"
             onClick={() => handleOpenApp(icon.key)}
+            style={{ 
+              backgroundColor: 'var(--icon-bg)'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--icon-bg-hover)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--icon-bg)'}
           >
             <div className="text-4xl">{icon.emoji}</div>
-            <span className="text-white text-xs font-medium text-center drop-shadow-lg hover:font-bold">{icon.label}</span>
+            <span className="text-xs font-medium text-center drop-shadow-lg hover:font-bold transition-all duration-200"
+                  style={{ color: 'var(--text-primary)' }}>{icon.label}</span>
           </button>
         ))}
       </div>
 
-      {/* Terminal icône - positionné en bas à droite */}
-      <div className="absolute bottom-24 right-8 z-10">
+      <div className="absolute bottom-20 right-8 z-10">
         <button
-          className="icon flex flex-col items-center gap-2 p-4 w-28 bg-gray-900/80 backdrop-blur-md rounded-2xl cursor-pointer hover:bg-gray-800/90 hover:scale-105 transition-all duration-200 shadow-2xl border border-green-500/30"
-          onClick={() => handleOpenApp('terminal')}
+          className="icon flex flex-col items-center gap-2 p-4 w-28 backdrop-blur-md rounded-2xl cursor-pointer hover:scale-105 transition-all duration-200 shadow-xl"
+          onClick={() => handleOpenApp(TERMINAL_ICON.key)}
+          style={{ 
+            backgroundColor: 'var(--icon-bg)'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--icon-bg-hover)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--icon-bg)'}
         >
-          <div className="text-4xl">⌨️</div>
-          <span className="text-green-400 text-xs font-medium text-center drop-shadow-lg hover:font-bold">Terminal</span>
+          <div className="text-4xl">{TERMINAL_ICON.emoji}</div>
+          <span className="text-xs font-medium text-center drop-shadow-lg hover:font-bold transition-all duration-200"
+                style={{ color: 'var(--text-primary)' }}>{TERMINAL_ICON.label}</span>
         </button>
       </div>
 

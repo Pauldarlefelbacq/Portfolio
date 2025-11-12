@@ -19,25 +19,21 @@ const Terminal = () => {
 	const inputRef = useRef(null);
 	const historyEndRef = useRef(null);
 
-	// Système de fichiers virtuel pour le jeu
 	const [fileSystem, setFileSystem] = useState({
-		'~': ['Documents', 'Photos', 'secret.txt'],
-		'~/Documents': ['projet.txt', 'notes.md', 'cv.pdf'],
-		'~/Photos': ['vacances.jpg', 'famille.png', 'tresor.jpg'],
-		'~/secret': ['clef.key', 'message.txt'],
+		'~': ['tetris', 'linux', 'randonnee', 'notes.txt', '.secret'],
+		'~/tetris': ['highscores.dat', 'tetrominos.txt', 'level_10.save'],
+		'~/linux': ['kernel.log', 'bash_history', 'config.conf', 'tux.ascii'],
+		'~/randonnee': ['gr20.gpx', 'refuges.md', 'sommet.jpg', 'equipement.txt'],
+		'~/.secret': ['clef.key', 'code_source.c', '.easter_egg'],
 	});
 
-	const treasureItems = ['tresor.jpg', 'clef.key', 'secret.txt'];
+	const treasureItems = ['notes.txt', 'sommet.jpg', 'clef.key'];
 
 	useEffect(() => {
 		if (isAuthenticated()) {
 			const user = getCurrentUser();
 			setIsLoggedIn(true);
 			setUsername(user.username || user.email);
-			setFileSystem(prev => ({
-				...prev,
-				'~': [...new Set([...prev['~'], 'secret'])]
-			}));
 		}
 
 		setHistory([
@@ -55,9 +51,9 @@ const Terminal = () => {
 			{ type: 'system', text: '⠀⢀⣾⣿⣿⠿⠟⠛⠋⠉⠉⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠻⠿⣿⣿⣷⡀⠀' },
 			{ type: 'system', text: '⣠⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⣄' },
 			{ type: 'system', text: '' },
-			{ type: 'system', text: '================================================' },
+			{ type: 'system', text: '====================================' },
 			{ type: 'system', text: '    Portfolio Terminal v1.0' },
-			{ type: 'system', text: '================================================' },
+			{ type: 'system', text: '====================================' },
 			{ type: 'system', text: '' },
 			{ type: 'info', text: 'Tapez "help" pour voir les commandes disponibles' },
 			{ type: 'info', text: 'Tapez "game" pour démarrer le challenge' },
@@ -85,7 +81,6 @@ const Terminal = () => {
 			case 'help':
 				addToHistory({ type: 'output', text: 'Commandes disponibles:' });
 				addToHistory({ type: 'output', text: '  help          - Affiche cette aide' });
-				addToHistory({ type: 'output', text: '  ls            - Liste les fichiers du répertoire' });
 				addToHistory({ type: 'output', text: '  cd <dir>      - Change de répertoire' });
 				addToHistory({ type: 'output', text: '  cat <file>    - Affiche le contenu d\'un fichier' });
 				addToHistory({ type: 'output', text: '  pwd           - Affiche le chemin actuel' });
@@ -93,6 +88,8 @@ const Terminal = () => {
 				addToHistory({ type: 'output', text: '  clear         - Efface l\'écran' });
 				addToHistory({ type: 'output', text: '  game          - Lance le challenge' });
 				addToHistory({ type: 'output', text: '  score         - Affiche votre score' });
+				addToHistory({ type: 'output', text: '  mkdir <dir>   - Crée un dossier' });
+				addToHistory({ type: 'output', text: '  touch <file>  - Crée un fichier' });
 				if (isLoggedIn) {
 					addToHistory({ type: 'system', text: '' });
 					addToHistory({ type: 'system', text: 'Commandes Admin (Projets):' });
@@ -107,15 +104,60 @@ const Terminal = () => {
 				break;
 
 			case 'ls':
+				const showHidden = args.includes('-a');
 				const files = fileSystem[currentPath] || [];
-				if (files.length === 0) {
+				const filteredFiles = showHidden ? files : files.filter(f => !f.startsWith('.'));
+				
+				if (filteredFiles.length === 0) {
 					addToHistory({ type: 'output', text: 'Répertoire vide' });
 				} else {
-					files.forEach((file) => {
+					filteredFiles.forEach((file) => {
 						const isTreasure = treasureItems.includes(file);
-						const style = isTreasure ? 'success' : 'output';
-						addToHistory({ type: style, text: `  ${file}${isTreasure ? ' *' : ''}` });
+						const isHidden = file.startsWith('.');
+						const style = isTreasure ? 'success' : (isHidden ? 'info' : 'output');
+						const suffix = isTreasure ? ' *' : (isHidden ? '' : '');
+						addToHistory({ type: style, text: `  ${file}${suffix}` });
 					});
+				}
+				break;
+
+			case 'mkdir':
+				if (args.length === 0) {
+					addToHistory({ type: 'error', text: 'mkdir: missing file operand' });
+				} else {
+					const folderName = args[0];
+					const currentFiles = fileSystem[currentPath] || [];
+					
+					if (currentFiles.includes(folderName)) {
+						addToHistory({ type: 'error', text: `mkdir: cannot create directory '${folderName}': File exists` });
+					} else {
+						const newPath = currentPath === '~' ? `~/${folderName}` : `${currentPath}/${folderName}`;
+						setFileSystem(prev => ({
+							...prev,
+							[currentPath]: [...currentFiles, folderName],
+							[newPath]: []
+						}));
+						addToHistory({ type: 'success', text: `Dossier '${folderName}' créé` });
+					}
+				}
+				break;
+
+			case 'touch':
+				if (args.length === 0) {
+					addToHistory({ type: 'error', text: 'touch: missing file operand' });
+				} else {
+					const fileName = args[0];
+					const currentFiles = fileSystem[currentPath] || [];
+					
+					if (currentFiles.includes(fileName)) {
+						addToHistory({ type: 'error', text: `touch: cannot create file '${fileName}': File exists` });
+					} else {
+						setFileSystem(prev => ({
+							...prev,
+							[currentPath]: [...currentFiles, fileName]
+						}));
+						addToHistory({ type: 'success', text: `Fichier '${fileName}' créé` });
+					}
 				}
 				break;
 
@@ -150,18 +192,37 @@ const Terminal = () => {
 					const files = fileSystem[currentPath] || [];
 					
 					if (files.includes(fileName)) {
-						if (fileName === 'secret.txt') {
-							addToHistory({ type: 'success', text: '[SUCCESS] Premier secret découvert' });
-							addToHistory({ type: 'output', text: 'Indice: Regardez dans le dossier Photos...' });
-							updateGameProgress('secret.txt');
-						} else if (fileName === 'tresor.jpg') {
-							addToHistory({ type: 'success', text: '[SUCCESS] Trésor localisé, mais verrouillé' });
-							addToHistory({ type: 'output', text: 'Indice: Une clef est cachée dans un dossier secret...' });
-							updateGameProgress('tresor.jpg');
+						if (fileName === 'notes.txt') {
+							addToHistory({ type: 'success', text: '[SUCCESS] Premier indice découvert (+30 points)' });
+							addToHistory({ type: 'output', text: 'Note: "Le sommet cache quelque chose d\'important dans le dossier randonnee..."' });
+							updateGameProgress('notes.txt');
+						} else if (fileName === 'sommet.jpg') {
+							addToHistory({ type: 'success', text: '[SUCCESS] Photo du sommet trouvée (+30 points)' });
+							addToHistory({ type: 'output', text: 'Indice: Une clef est cachée dans un dossier secret. Utilisez "ls -a" pour voir les fichiers cachés.' });
+							updateGameProgress('sommet.jpg');
 						} else if (fileName === 'clef.key') {
-							addToHistory({ type: 'success', text: '[SUCCESS] Clef acquise - Challenge terminé !' });
-							addToHistory({ type: 'success', text: `Score final: ${gameState.score + 100} points` });
+							addToHistory({ type: 'success', text: '[SUCCESS] Clef SSH acquise - Challenge terminé' });
+							addToHistory({ type: 'success', text: `Score final: ${gameState.score + 40} points` });
 							updateGameProgress('clef.key');
+						} else if (fileName === 'code_source.c') {
+							addToHistory({ type: 'output', text: '/* Tetris Engine v2.0 - Code source confidentiel */' });
+							addToHistory({ type: 'output', text: '// TODO: Optimiser la rotation des tetrominos' });
+						} else if (fileName === '.easter_egg') {
+							addToHistory({ type: 'info', text: 'Easter egg: "Konami Code Activated! ↑↑↓↓←→←→BA"' });
+						} else if (fileName === 'tux.ascii') {
+							addToHistory({ type: 'output', text: '   .--.' });
+							addToHistory({ type: 'output', text: '  |o_o |   Tux le pingouin vous salue!' });
+							addToHistory({ type: 'output', text: '  |:_/ |' });
+							addToHistory({ type: 'output', text: ' //   \\ \\' });
+							addToHistory({ type: 'output', text: '(|     | )' });
+						} else if (fileName === 'gr20.gpx') {
+							addToHistory({ type: 'output', text: 'Trace GPX: GR20 Corse - 180km, D+ 10000m' });
+							addToHistory({ type: 'output', text: 'Étapes: Calenzana → Conca (15 jours)' });
+						} else if (fileName === 'highscores.dat') {
+							addToHistory({ type: 'output', text: '=== TETRIS HIGH SCORES ===' });
+							addToHistory({ type: 'output', text: '1. AAA - 999999 pts' });
+							addToHistory({ type: 'output', text: '2. TUX - 512000 pts' });
+							addToHistory({ type: 'output', text: '3. YOU - 128000 pts' });
 						} else {
 							addToHistory({ type: 'output', text: `Contenu de ${fileName}: [Document standard]` });
 						}
@@ -186,11 +247,12 @@ const Terminal = () => {
 				if (!gameState.started) {
 					setGameState({ started: true, level: 0, score: 0, foundItems: [] });
 					addToHistory({ type: 'success', text: '[GAME] Challenge démarré' });
-					addToHistory({ type: 'info', text: 'Mission: Localiser 3 objets cachés dans le système' });
-					addToHistory({ type: 'info', text: 'Indice: Commencez par chercher "secret.txt"' });
-					addToHistory({ type: 'info', text: 'Utilisez "ls" et "cat" pour explorer' });
+					addToHistory({ type: 'info', text: 'Mission: Localiser 3 objets cachés dans le système de fichiers' });
+					addToHistory({ type: 'info', text: 'Indice: Commencez par chercher "notes.txt" dans le répertoire home' });
+					addToHistory({ type: 'info', text: 'Utilisez "ls" pour lister, "cd" pour naviguer, "cat" pour lire' });
+					addToHistory({ type: 'info', text: 'Astuce: Certains fichiers peuvent être cachés.' });
 				} else {
-					addToHistory({ type: 'warning', text: 'Challenge déjà en cours' });
+					addToHistory({ type: 'warning', text: 'Challenge déjà en cours. Utilisez "score" pour voir votre progression.' });
 				}
 				break;
 
@@ -209,7 +271,6 @@ const Terminal = () => {
 			case 'login':
 				if (args.length === 0) {
 					addToHistory({ type: 'info', text: 'Usage: login <username>' });
-					addToHistory({ type: 'info', text: 'La connexion se fait via PocketBase' });
 				} else {
 					setLoginUsername(args[0]);
 					setAwaitingPassword(true);
@@ -222,10 +283,6 @@ const Terminal = () => {
 					logoutUser();
 					setIsLoggedIn(false);
 					setUsername('visiteur');
-					setFileSystem(prev => ({
-						...prev,
-						'~': prev['~'].filter(item => item !== 'secret')
-					}));
 					addToHistory({ type: 'success', text: '[OK] Déconnexion réussie' });
 				} else {
 					addToHistory({ type: 'warning', text: 'Aucune session active' });
@@ -385,7 +442,12 @@ const Terminal = () => {
 	const updateGameProgress = (item) => {
 		if (gameState.started && !gameState.foundItems.includes(item)) {
 			const newFoundItems = [...gameState.foundItems, item];
-			const points = treasureItems.indexOf(item) === 0 ? 50 : treasureItems.indexOf(item) === 1 ? 75 : 100;
+			const pointsMap = {
+				'notes.txt': 30,
+				'sommet.jpg': 30,
+				'clef.key': 40
+			};
+			const points = pointsMap[item] || 0;
 			
 			setGameState({
 				...gameState,
@@ -395,7 +457,7 @@ const Terminal = () => {
 			});
 
 			if (newFoundItems.length === 3) {
-				addToHistory({ type: 'success', text: '[COMPLETED] Tous les objectifs atteints !' });
+				addToHistory({ type: 'success', text: '[COMPLETED] Tous les objectifs atteints' });
 			}
 		}
 	};
@@ -404,22 +466,15 @@ const Terminal = () => {
 		e.preventDefault();
 		if (input.trim()) {
 			if (awaitingPassword) {
-				// Mode password - on masque le mot de passe dans l'historique
 				addToHistory({ type: 'command', text: `${username}@portfolio:${currentPath}$ ********` });
 				
-				// Tentative de connexion
 				const result = await loginUser(loginUsername, input);
 				
 				if (result.success) {
 					setIsLoggedIn(true);
 					setUsername(result.user.username || result.user.email);
 					addToHistory({ type: 'success', text: `[OK] Authentification réussie en tant que ${result.user.username || result.user.email}` });
-					addToHistory({ type: 'info', text: 'Accès au dossier secret déverrouillé' });
-					// Déverrouiller le dossier secret
-					setFileSystem(prev => ({
-						...prev,
-						'~': [...new Set([...prev['~'], 'secret'])]
-					}));
+					addToHistory({ type: 'info', text: 'Accès administrateur activé' });
 				} else {
 					addToHistory({ type: 'error', text: '[FAILED] Authentification échouée' });
 					addToHistory({ type: 'error', text: result.error });

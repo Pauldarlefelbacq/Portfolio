@@ -196,7 +196,6 @@ const Corbeille = ({ onOpenProjet }) => {
                 </div>
             )}
 
-            {/* Mobile: Vertical cards */}
             <div className="md:hidden p-4 overflow-auto h-full">
                 <div className="grid grid-cols-1 gap-4">
                     {projetsFiltre.map((project, index) => (
@@ -208,7 +207,8 @@ const Corbeille = ({ onOpenProjet }) => {
                                     onOpenProjet(project);
                                 }
                             }}
-                            className="bg-white rounded-lg drop-shadow-md hover:drop-shadow-lg transition-all p-4 cursor-pointer"
+                            className="rounded-lg drop-shadow-md hover:drop-shadow-lg transition-all p-4 cursor-pointer"
+                            style={{ background: 'var(--bg-primary)' }}
                         >
                             {project.imgR?.[0] && (
                                 <img className="w-full h-48 object-cover rounded-md mb-3" src={project.imgR[0]} alt={project.nom} />
@@ -229,7 +229,6 @@ const Corbeille = ({ onOpenProjet }) => {
                 </div>
             </div>
 
-            {/* Desktop: Split view */}
             <div className="hidden md:flex p-4 items-center h-full">
                 <div className="w-2/3 overflow-auto">
                     {projetsFiltre.map((project, index) => (

@@ -4,15 +4,23 @@ import Settings from "../assets/settings.svg?react";
 import Github from "../assets/github.svg?react";
 import Linkedin from "../assets/linkedin.svg?react";
 
-export default function Parametres() {
+export default function Parametres({ onOpenMentions }) {
+    
+
     const [theme, setTheme] = useState(() => {
-        return 'light';
+        if (document.documentElement.classList.contains('dark')) {
+            return 'dark';
+        } else {
+            return 'light';
+        }
     });
 
     useEffect(() => {
         document.documentElement.classList.remove('light', 'dark');
         document.documentElement.classList.add(theme);
         localStorage.setItem('theme', theme);
+        console.log(localStorage.item);
+        
     }, [theme]);
 
     const toggleTheme = () => {
@@ -42,7 +50,6 @@ export default function Parametres() {
                 </div>
             </div>
 
-            {/* Contact Section */}
             <div className="rounded-xl p-4 border transition-colors duration-300" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
                 <h4 className="font-medium mb-3 transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Contact</h4>
                 <a 
@@ -53,7 +60,6 @@ export default function Parametres() {
                 </a>
             </div>
 
-            {/* Social Links */}
             <div className="rounded-xl p-4 border transition-colors duration-300" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
                 <h4 className="font-medium mb-3 transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Réseaux sociaux</h4>
                 <div className="flex gap-4 justify-center">
@@ -82,7 +88,19 @@ export default function Parametres() {
                 </div>
             </div>
 
-            {/* Footer Icon */}
+            <div className="rounded-xl p-4 border transition-colors duration-300" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
+                <button 
+                    onClick={onOpenMentions}
+                    className="w-full text-center py-2 rounded-lg transition-all duration-200 hover:opacity-80"
+                    style={{ 
+                        backgroundColor: 'var(--bg-tertiary)',
+                        color: 'var(--text-primary)'
+                    }}
+                >
+                    Mentions légales
+                </button>
+            </div>
+
             <div className="flex-grow flex items-end justify-center pb-4">
                 <Icon className="size-20 opacity-40 hover:opacity-100 transition-opacity duration-300" alt="" />
             </div>

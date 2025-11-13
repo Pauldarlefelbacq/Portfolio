@@ -210,7 +210,8 @@ const Projets = ({ onOpenProjet }) => {
 									onOpenProjet(project);
 								}
 							}}
-							className="bg-white rounded-lg drop-shadow-md hover:drop-shadow-lg transition-all p-4 cursor-pointer"
+							className=" rounded-lg drop-shadow-md hover:drop-shadow-lg transition-all p-4 cursor-pointer"
+							style={{ background: 'var(--bg-primary)' }}
 						>
 							{project.imgR?.[0] && (
 								<img className="w-full h-40 sm:h-48 object-cover rounded-md mb-3" src={project.imgR[0]} alt={project.nom} />

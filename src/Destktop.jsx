@@ -1,4 +1,13 @@
 import React, { useState } from 'react';
+
+import ContactSvg from "./assets/Contact.svg";
+import ProjetsSvg from "./assets/Dossier.svg";
+import CorbeilleSvg from "./assets/Poubelle.svg";
+import ProfilSvg from "./assets/Profil.svg";
+import ParamSvg from "./assets/settings.svg";
+import TerminalSvg from './assets/Terminal.svg'
+import MentionSvg from './assets/Mentions.svg'
+
 import Contact from './Fenetres/Contact';
 import Apropos from './Fenetres/Apropos';
 import Projets from './Fenetres/Projets';
@@ -8,6 +17,7 @@ import Projetsnew from './Fenetres/Projets_new';
 import Projet from './Components/Projet';
 import Corbeille from './Fenetres/Corbeille'
 import Terminal from './Fenetres/Terminal';
+import MentionsLegales from './Fenetres/MentionsLegales';
 
 const createWindowId = (prefix) => `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 
@@ -19,17 +29,19 @@ const APPS = {
   terminal: { title: 'Terminal', component: Terminal },
   parametres: { title: 'Paramètres', component: Parametres},
   corbeille: { title: 'Corbeille', component: Corbeille },
+  mentions: { title: 'Mentions légales', component: MentionsLegales },
 };
 
 const DESKTOP_ICONS = [
-  { key: 'about', emoji: '👤', label: 'À propos de moi' },
-  { key: 'projects', emoji: '🎯', label: 'Mes projets' },
-  { key: 'contact', emoji: '📝', label: 'Me contacter' },
-  { key: 'parametres', emoji: 'I', label: 'Paramètres' },
-  { key: 'corbeille', emoji: 'C', label: 'Corbeille' },
+  { key: 'about', svg: ProfilSvg, label: 'À propos de moi' },
+  { key: 'projects', svg: ProjetsSvg, label: 'Mes projets' },
+  { key: 'contact', svg: ContactSvg, label: 'Me contacter' },
+  { key: 'parametres', svg: ParamSvg, label: 'Paramètres' },
+  { key: 'corbeille', svg: CorbeilleSvg, label: 'Corbeille' },
+  { key: 'mentions', svg: MentionSvg, label: 'Mentions légales' },
 ];
 
-const TERMINAL_ICON = { key: 'terminal', emoji: '💻', label: 'Terminal' };
+const TERMINAL_ICON = { key: 'terminal', svg: TerminalSvg, label: 'Terminal' };
 
 
 //gestion des fenêtres
@@ -63,7 +75,7 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
             className="w-8 h-8 flex items-center justify-center hover:bg-red-500 hover:text-white rounded-full transition-colors duration-150"
             title="Close"
           >
-            <span className="text-xs">✕</span>
+            <span className="text-md" style={{ color: 'var(--text-primary)' }}>✕</span>
           </button>
         </div>
       </div>
@@ -223,11 +235,11 @@ const Desktop = () => {
              style={{ backgroundColor: 'var(--desktop-gradient)' }}></div>
       </div>
 
-      <div className="absolute top-8 left-8 flex flex-col gap-6 z-10 ">
+      <div className="absolute top-8 left-8 flex flex-wrap max-w-4/5 gap-6 z-10">
         {desktopIcons.map(icon => (
           <button
             key={icon.key}
-            className="icon flex flex-col items-center gap-2 p-4 w-28 backdrop-blur-md rounded-2xl cursor-pointer hover:scale-105 transition-all duration-200 shadow-xl"
+            className="icon flex flex-col items-center gap-2 p-4 w-28 backdrop-blur-md rounded-2xl cursor-pointer hover:scale-105 transition-all duration-200 shadow-xl group"
             onClick={() => handleOpenApp(icon.key)}
             style={{ 
               backgroundColor: 'var(--icon-bg)'
@@ -235,9 +247,20 @@ const Desktop = () => {
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--icon-bg-hover)'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--icon-bg)'}
           >
-            <div className="text-4xl">{icon.emoji}</div>
-            <span className="text-xs font-medium text-center drop-shadow-lg hover:font-bold transition-all duration-200"
-                  style={{ color: 'var(--text-primary)' }}>{icon.label}</span>
+            {icon.svg ? (
+              <img 
+                src={icon.svg} 
+                alt={icon.label} 
+                className="w-12 h-12 transition-all duration-200" 
+                style={{ 
+                  filter: 'brightness(0) saturate(100%) invert(100%)'
+                }}
+              />
+            ) : (
+              <div className="text-4xl">{icon.emoji}</div>
+            )}
+            <span className="text-xs text-white font-medium text-center drop-shadow-lg hover:font-bold transition-all duration-200"
+              >{icon.label}</span>
           </button>
         ))}
       </div>
@@ -252,7 +275,14 @@ const Desktop = () => {
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--icon-bg-hover)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--icon-bg)'}
         >
-          <div className="text-4xl">{TERMINAL_ICON.emoji}</div>
+          <img 
+                src={TERMINAL_ICON.svg} 
+                alt={TERMINAL_ICON.label} 
+                className="w-12 h-12 transition-all duration-200" 
+                style={{ 
+                  filter: 'brightness(0) saturate(100%) invert(100%)'
+                }}
+              />
           <span className="text-xs font-medium text-center drop-shadow-lg hover:font-bold transition-all duration-200"
                 style={{ color: 'var(--text-primary)' }}>{TERMINAL_ICON.label}</span>
         </button>
@@ -273,6 +303,8 @@ const Desktop = () => {
           >
             {win.appKey === 'projects' || win.appKey === 'corbeille' ? (
               <Content onOpenProjet={handleOpenProjet} />
+            ) : win.appKey === 'parametres' ? (
+              <Content onOpenMentions={() => handleOpenApp('mentions')} />
             ) : (
               <Content />
             )}

@@ -50,11 +50,11 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
     <div
       className={
         isMaximised
-          ? "fixed flex flex-col backdrop-blur-2xl border shadow-2xl transition-all duration-300 top-0 left-0 w-screen h-screen rounded-none z-40"
+          ? "fixed flex flex-col backdrop-blur-2xl border shadow-2xl transition-all duration-300 top-0 left-0 w-screen rounded-none z-40"
           : `fixed flex flex-col backdrop-blur-2xl border shadow-2xl rounded-2xl transition-all duration-300 w-[90vw] h-[80vh] max-w-[1200px] max-h-[800px] min-w-[320px] min-h-[400px] z-40`
       }
       style={{
-        ...(isMaximised ? { top: 0, left: 0 } : { top: positionY, left: positionX }),
+        ...(isMaximised ? { top: 0, left: 0, height: 'calc(100vh - 64px)' } : { top: positionY, left: positionX }),
         backgroundColor: 'var(--window-bg)',
         borderColor: 'var(--border-color)'
       }}
@@ -142,7 +142,7 @@ const Desktop = () => {
         title: app.title,
         isMaximised: false,
         x: isMobile ? '5vw' : `${140 + offsetShift}px`,
-        y: isMobile ? `${10 + offsetShift * 0.5}vh` : `${100 + offsetShift}px`,
+        y: isMobile ? `${5 + offsetShift * 0.3}vh` : `${100 + offsetShift}px`,
         component: app.component,
       };
 
@@ -160,7 +160,7 @@ const Desktop = () => {
         title: projet.nom,
         isMaximised: false,
         x: isMobile ? '5vw' : `${140 + offsetShift}px`,
-        y: isMobile ? `${10 + offsetShift * 0.5}vh` : `${100 + offsetShift}px`,
+        y: isMobile ? `${5 + offsetShift * 0.3}vh` : `${100 + offsetShift}px`,
         component: () => <Projet projet={projet} />,
       };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import ContactSvg from "./assets/Contact.svg";
 import ProjetsSvg from "./assets/Dossier.svg";
@@ -46,20 +46,27 @@ const TERMINAL_ICON = { key: 'terminal', svg: TerminalSvg, label: 'Terminal' };
 
 //gestion des fenêtres
 const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, positionY, positionX, children }) => {
+  const windowRef = useRef(null);
+  
   return (
     <div
+      ref={windowRef}
       className={
         isMaximised
           ? "fixed flex flex-col backdrop-blur-2xl border shadow-2xl transition-all duration-300 top-0 left-0 w-screen rounded-none z-40"
-          : `fixed flex flex-col backdrop-blur-2xl border shadow-2xl rounded-2xl transition-all duration-300 w-[90vw] h-[80vh] max-w-[1200px] max-h-[800px] min-w-[320px] min-h-[400px] z-40`
+          : `fixed flex flex-col backdrop-blur-2xl border shadow-2xl rounded-2xl w-[90vw] h-[80vh] max-w-[1200px] max-h-[800px] min-w-[320px] min-h-[400px] z-40`
       }
       style={{
-        ...(isMaximised ? { top: 0, left: 0, height: 'calc(100vh - 64px)' } : { top: positionY, left: positionX }),
+        ...(isMaximised 
+          ? { top: 0, left: 0, height: 'calc(100vh - 64px)' } 
+          : { top: 0, left: 0, transform: `translate(${positionX}, ${positionY})` }
+        ),
         backgroundColor: 'var(--window-bg)',
-        borderColor: 'var(--border-color)'
+        borderColor: 'var(--border-color)',
+        transition: isMaximised ? 'all 0.3s' : 'none'
       }}
     >
-      <div onMouseDown={onMouseDown} className="title-bar flex justify-between items-center backdrop-blur-sm px-4 py-3 cursor-move border-b rounded-t-2xl transition-colors duration-300"
+      <div onMouseDown={(e) => onMouseDown(e, windowRef.current)} className="title-bar flex justify-between items-center backdrop-blur-sm px-4 py-3 cursor-move border-b rounded-t-2xl transition-colors duration-300"
            style={{ backgroundColor: 'var(--window-titlebar)', borderColor: 'var(--border-color)' }}>
         <span className="font-semibold text-sm transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>{title}</span>
         <div className="flex items-center gap-2">
@@ -120,7 +127,13 @@ const Desktop = () => {
     return initialWindows;
   });
   const [fenetreQuiBouge, setFenetreQuiBouge] = useState(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const dragState = useRef({ 
+    isDragging: false, 
+    currentId: null, 
+    offsetX: 0, 
+    offsetY: 0,
+    element: null 
+  });
 
 
   const handleOpenApp = (appKey) => {
@@ -182,13 +195,22 @@ const Desktop = () => {
       })
     );
   };
-  const handleMouseDown = (e, id) => {
+  const handleMouseDown = (e, id, element) => {
     const windowRef = openWindows.find(win => win.id === id);
     if (!windowRef || windowRef.isMaximised) return;
     e.preventDefault();
-    const offsetX = e.clientX - parseInt(windowRef.x, 10);
-    const offsetY = e.clientY - parseInt(windowRef.y, 10);
-    setOffset({ x: offsetX, y: offsetY });
+    
+    const rect = element.getBoundingClientRect();
+    dragState.current = {
+      isDragging: true,
+      currentId: id,
+      offsetX: e.clientX - rect.left,
+      offsetY: e.clientY - rect.top,
+      element: element,
+      startX: rect.left,
+      startY: rect.top
+    };
+    
     setFenetreQuiBouge(id);
 
     setOpenWindows(prev => {
@@ -199,23 +221,43 @@ const Desktop = () => {
       return [...updated, dragged];
     });
   };
+  
   const handleMouseMove = (e) => {
-    if (!fenetreQuiBouge) return;
-    setOpenWindows(currentWindows =>
-      currentWindows.map(win => {
-        if (win.id === fenetreQuiBouge) {
-          if (win.isMaximised) {
-            return win;
-          }
-          const newX = e.clientX - offset.x;
-          const newY = e.clientY - offset.y;
-          return { ...win, x: `${newX}px`, y: `${newY}px` };
-        }
-        return win;
-      })
-    );
+    if (!dragState.current.isDragging || !dragState.current.element) return;
+    
+    const newX = e.clientX - dragState.current.offsetX;
+    const newY = e.clientY - dragState.current.offsetY;
+    
+    // Manipulation directe du DOM pour performance maximale
+    dragState.current.element.style.transform = `translate(${newX}px, ${newY}px)`;
   };
+  
   const handleMouseUp = () => {
+    if (dragState.current.isDragging && dragState.current.element) {
+      // Récupérer la position finale depuis le DOM
+      const rect = dragState.current.element.getBoundingClientRect();
+      
+      setOpenWindows(currentWindows =>
+        currentWindows.map(win => {
+          if (win.id === dragState.current.currentId) {
+            return { 
+              ...win, 
+              x: `${rect.left}px`, 
+              y: `${rect.top}px` 
+            };
+          }
+          return win;
+        })
+      );
+      
+      dragState.current = { 
+        isDragging: false, 
+        currentId: null, 
+        offsetX: 0, 
+        offsetY: 0,
+        element: null 
+      };
+    }
     setFenetreQuiBouge(null);
   };
 
@@ -290,6 +332,7 @@ const Desktop = () => {
 
       {openWindows.map(win => {
         const Content = win.component;
+        
         return (
           <Window
             key={win.id}
@@ -299,7 +342,7 @@ const Desktop = () => {
             positionY={win.y}
             onClose={() => handleCloseApp(win.id)}
             onMaximise={() => handleMaximiseApp(win.id)}
-            onMouseDown={(e) => handleMouseDown(e, win.id)}
+            onMouseDown={(e, element) => handleMouseDown(e, win.id, element)}
           >
             {win.appKey === 'projects' || win.appKey === 'corbeille' ? (
               <Content onOpenProjet={handleOpenProjet} />

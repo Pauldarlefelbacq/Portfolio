@@ -64,12 +64,15 @@ const Lock = () => {
 								type="password" 
 								placeholder="Mot de passe"
 							/>
-							<div className='flex w-full justify-center items-center gap-2 text-white text-base md:text-lg hover:font-bold transition-all pt-2'>
+							<div className='flex w-full justify-center items-center gap-2 text-white text-base md:text-lg font-semibold transition-all pt-2 backdrop-blur-sm rounded-lg p-3 shadow-lg hover:bg-black/60'>
 								<Link to='/destktop' className='hover:scale-105 transition-transform'>
 									Se connecter
 								</Link>
 								<span>→</span>
 							</div>
+							<p className='text-center text-white text-sm mt-4 italic animate-pulse backdrop-blur-sm rounded-lg p-2 shadow-lg'>
+								Psssst ! Pas vraiment besoin de se connecter !
+							</p>
 						</>
 					) : (
 						<div className='w-full'>
@@ -105,17 +108,18 @@ const Lock = () => {
 									<span className='text-2xl font-bold'>&gt;</span>
 								</div>
 							</div>
-							
-							<p className='text-center text-white/70 text-xs mt-2'>
+							<p className='text-center text-white text-xs mt-2  backdrop-blur-sm rounded-lg p-2'>
 								Ou tapez sur "Se connecter" ci-dessous
 							</p>
-							
-							<div className='flex w-full justify-center items-center gap-2 text-white text-sm hover:font-bold transition-all pt-2'>
+							<div className='flex w-full justify-center items-center gap-2 text-white text-sm font-semibold transition-all pt-2 backdrop-blur-sm rounded-lg p-3 mt-2 shadow-lg hover:bg-black/60'>
 								<Link to='/destktop' className='hover:scale-105 transition-transform'>
 									Se connecter
 								</Link>
 								<span>→</span>
 							</div>
+							<p className='text-center text-white text-sm mt-4 italic animate-pulse  backdrop-blur-sm rounded-lg p-2 shadow-lg'>
+								Psssst ! Pas vraiment besoin de se connecter !
+							</p>
 						</div>
 					)}
 				</div>

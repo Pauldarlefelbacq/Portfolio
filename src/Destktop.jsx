@@ -68,14 +68,14 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
             className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-150 hover:bg-gray-300/50 dark:hover:bg-gray-600/50"
             title="Maximize"
           >
-            <span className="text-xs transition-colors duration-300" style={{ color: 'var(--text-secondary)' }}>□</span>
+            <span className="text-md font-bold transition-colors duration-300" style={{ color: 'var(--text-secondary)' }}>□</span>
           </button>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center hover:bg-red-500 hover:text-white rounded-full transition-colors duration-150"
             title="Close"
           >
-            <span className="text-md" style={{ color: 'var(--text-primary)' }}>✕</span>
+            <span className="text-xl" style={{ color: 'var(--text-primary)' }}>✕</span>
           </button>
         </div>
       </div>

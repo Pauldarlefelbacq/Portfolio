@@ -33,7 +33,7 @@ export default function Navbar({ handleOpenApp }) {
 
             <div className="flex items-center gap-4">
                 <button className="text-white/80 text-xl transition-colors duration-200" onClick={() => handleOpenApp('parametres')}>
-                    <Settings className=" hover:[&_*]:stroke-white  hover:scale-125 size-7 transition-all" />
+                    <Settings className=" hover:[&_*]:stroke-white  hover:scale-125 hover:rotate-180 cursor-pointer size-7 transition-all" />
                 </button>
                 <div className="text-white/90 text-sm font-medium">
                     {dateComplete}

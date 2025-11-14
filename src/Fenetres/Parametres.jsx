@@ -54,8 +54,7 @@ export default function Parametres({ onOpenMentions }) {
                 <h4 className="font-medium mb-3 transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Contact</h4>
                 <a 
                     href="mailto:darlefelbacqpaul@gmail.com" 
-                    className="block px-4 py-2 border rounded-sm hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-200 text-center"
-                    style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
+                    className="block px-4 py-2 border rounded-sm transition-all duration-200 text-center [background-color:var(--bg-tertiary)] [border-color:var(--border-color)] [color:var(--text-secondary)] hover:[background-color:black] hover:[color:white] dark:hover:[background-color:white] dark:hover:[color:black]">
                     darlefelbacqpaul@gmail.com
                 </a>
             </div>
@@ -67,8 +66,8 @@ export default function Parametres({ onOpenMentions }) {
                         href="https://github.com/Pauldarlefelbacq"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center p-3 rounded-lg border hover:border-gray-800 hover:bg-gray-800 group transition-all duration-200 shadow-sm hover:shadow-md"
-                        style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}>
+                        className="flex items-center justify-center p-3 rounded-lg border hover:border-gray-800 hover:bg-white group transition-all duration-200 shadow-sm hover:shadow-md"
+                        style={{ borderColor: 'var(--border-color)' }}>
                         <Github 
                             className="size-8 transition-all" 
                             style={{ fill: 'var(--text-primary)' }}
@@ -79,8 +78,8 @@ export default function Parametres({ onOpenMentions }) {
                         href="https://www.linkedin.com/in/paul-darle-felbacq-657715226/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center p-3 rounded-lg border hover:border-blue-600 hover:bg-blue-600 group transition-all duration-200 shadow-sm hover:shadow-md"
-                        style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}>
+                        className="flex items-center justify-center p-3 rounded-lg border hover:bg-blue-500 group transition-all duration-200 shadow-sm hover:shadow-md"
+                        style={{ borderColor: 'var(--border-color)' }}>
                         <Linkedin 
                             className="size-8 [&_*]:fill-blue-600 group-hover:[&_*]:fill-white transition-all" 
                             alt="icone de linkedin" />
@@ -88,10 +87,10 @@ export default function Parametres({ onOpenMentions }) {
                 </div>
             </div>
 
-            <div className="rounded-xl p-4 border transition-colors duration-300" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
+            <div className="rounded-xl p-4 border transition-colors duration-300 hover:[background-color:black] hover:[color:white] dark:hover:[background-color:white] dark:hover:[color:black]" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
                 <button 
                     onClick={onOpenMentions}
-                    className="w-full text-center py-2 rounded-lg transition-all duration-200 hover:opacity-80"
+                    className="w-full text-center py-2 rounded-lg transition-all duration-200 hover:opacity-80 "
                     style={{ 
                         backgroundColor: 'var(--bg-tertiary)',
                         color: 'var(--text-primary)'

@@ -53,8 +53,8 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
       ref={windowRef}
       className={
         isMaximised
-          ? "fixed flex flex-col backdrop-blur-2xl border shadow-2xl transition-all duration-300 top-0 left-0 w-screen rounded-none z-40"
-          : `fixed flex flex-col backdrop-blur-2xl border shadow-2xl rounded-2xl w-[90vw] h-[80vh] max-w-[1200px] max-h-[800px] min-w-[320px] min-h-[400px] z-40`
+          ? "fixed flex flex-col border shadow-2xl transition-all duration-300 top-0 left-0 w-screen rounded-none z-40"
+          : `fixed flex flex-col border shadow-2xl rounded-2xl w-[90vw] h-[80vh] max-w-[1200px] max-h-[800px] min-w-[320px] min-h-[400px] z-40`
       }
       style={{
         ...(isMaximised 
@@ -63,7 +63,8 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
         ),
         backgroundColor: 'var(--window-bg)',
         borderColor: 'var(--border-color)',
-        transition: isMaximised ? 'all 0.3s' : 'none'
+        transition: isMaximised ? 'all 0.3s' : 'none',
+        willChange: 'transform'
       }}
     >
       <div onMouseDown={(e) => onMouseDown(e, windowRef.current)} className="title-bar flex justify-between items-center backdrop-blur-sm px-4 py-3 cursor-move border-b rounded-t-2xl transition-colors duration-300"
@@ -75,14 +76,14 @@ const Window = ({ title, onClose, onMaximise, isMaximised, onMouseDown, position
             className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-150 hover:bg-gray-300/50 dark:hover:bg-gray-600/50"
             title="Maximize"
           >
-            <span className="text-md font-bold transition-colors duration-300" style={{ color: 'var(--text-secondary)' }}>□</span>
+            <span className="text-md font-bold transition-colors duration-300 bg-yellow-500 rounded-full w-full h-full md:bg-transparent" style={{ color: 'var(--text-secondary)' }}>□</span>
           </button>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center hover:bg-red-500 hover:text-white rounded-full transition-colors duration-150"
             title="Close"
           >
-            <span className="text-xl" style={{ color: 'var(--text-primary)' }}>✕</span>
+            <span className="text-xl bg-red-800 rounded-full w-full h-full md:bg-transparent" style={{ color: 'var(--text-primary)' }}>✕</span>
           </button>
         </div>
       </div>

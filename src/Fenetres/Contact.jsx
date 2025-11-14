@@ -1,7 +1,11 @@
 const Contact = () => {
 	return (
 		<div className="flex h-full items-center justify-center p-4">
-			<form className="w-full max-w-lg space-y-6" action="" method="post">
+			<form 
+				className="w-full max-w-lg space-y-6" 
+				action="https://formspree.io/f/xqawedan	" 
+				method="POST"
+			>
 				<div className="text-center">
 					<h2 className="text-2xl font-semibold transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Me contacter</h2>
 					<p className="mt-2 text-sm transition-colors duration-300" style={{ color: 'var(--text-secondary)' }}>Envoyez-moi un message, je vous réponds rapidement !</p>
@@ -20,7 +24,7 @@ const Contact = () => {
 								borderColor: 'var(--border-color)'
 							}}
 							type="email"
-							name="mail"
+							name="_replyto"
 							id="mail"
 							placeholder="votre@email.com"
 							required
@@ -39,7 +43,7 @@ const Contact = () => {
 								borderColor: 'var(--border-color)'
 							}}
 							type="text"
-							name="sujet"
+							name="_subject"
 							id="sujet"
 							placeholder="Objet de votre message"
 							required

@@ -27,7 +27,7 @@
         --border-color: #e5e7eb;
         --icon-bg: rgba(255, 255, 255, 0.2);
         --icon-bg-hover: rgba(255, 255, 255, 0.3);
-        --window-bg: rgba(255, 255, 255, 0.9);
+        --window-bg: rgba(255, 255, 255, 1);
         --window-titlebar: rgba(243, 244, 246, 0.8);
         --desktop-gradient: rgba(255, 255, 255, 0.1);
         --desktop-overlay: rgba(0, 0, 0, 0);
@@ -43,7 +43,7 @@
         --border-color: #4b5563;
         --icon-bg: rgba(31, 41, 55, 0.7);
         --icon-bg-hover: rgba(55, 65, 81, 0.8);
-        --window-bg: rgba(31, 41, 55, 0.95);
+        --window-bg: rgba(31, 41, 55, 1);
         --window-titlebar: rgba(17, 24, 39, 0.9);
         --desktop-gradient: rgba(55, 65, 81, 0.2);
         --desktop-overlay: rgba(0, 0, 0, 0.4);

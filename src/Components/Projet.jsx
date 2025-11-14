@@ -82,12 +82,12 @@ const Projet = ({ projet }) => {
                         ))}
                     </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                <div className="flex flex-col sm:flex-row md:my-10 gap-4 items-start sm:items-center">
                     <a 
                     className="p-2 rounded-md drop-shadow-md hover:drop-shadow-none hover:translate-y-1 transition-all hover:bg-blue-400 hover:text-white w-full sm:w-auto text-center"
                     style={{
-                        backgroundColor: 'var(--bg-primary)',
-                        color: 'var(--text-primary)'
+                        backgroundColor: 'var(--text-primary)',
+                        color: 'var(--bg-primary)'
                     }}
                     target="_blank"
                     href={projet.lien_site}>

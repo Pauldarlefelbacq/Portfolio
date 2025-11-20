@@ -65,6 +65,9 @@ const MentionsLegales = () => {
                             L'ensemble des contenus présents sur ce site (textes, images, vidéos, animations, graphismes, logos, code source, etc.) est la propriété exclusive de <strong>Paul Darle-Felbacq</strong>, sauf mention contraire.
                         </p>
                         <p>
+                            L'image de fond n'est pas la propriété de <strong>Paul Darle-Felbacq</strong> mais est une image libre d'utilisation qui a été upscale grâce à un outil d'IA, la prétention aux droits d'auteur ne s'applique donc pas.
+                        </p>
+                        <p>
                             Toute reproduction à l'identique, par quelque procédé que ce soit, constitue une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code de la propriété intellectuelle.
                         </p>
                     </div>
@@ -79,7 +82,7 @@ const MentionsLegales = () => {
                             Aucune donnée personnelle n'est collectée à des fins commerciales ou statistiques.
                         </p>
                         <p>
-                            Le formulaire de contact permet uniquement d'envoyer un message directement par email à l'éditeur. Les messages ne sont pas stockés sur le site.
+                            Le formulaire de contact permet uniquement d'envoyer un message directement par email à l'éditeur(via formspree). Les messages ne sont pas stockés sur le site.
                         </p>
                         <p>
                             Aucun cookie de traçage ni outil tiers (Analytics, reCAPTCHA, etc.) n'est utilisé.

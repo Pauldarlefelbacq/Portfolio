@@ -106,6 +106,11 @@ const Corbeille = ({ onOpenProjet }) => {
                     <span className="font-medium">Filtrer</span>
                 </button>
             </span>
+            <div className="*:text-xl *:my-2 ml-10">
+                <h3 className="font-bold">Je ne vois pas la corbeille comme quelque chose de mauvais, tout en est récupérable après tout.</h3>
+                <h3 className="">Voici donc plusieurs projets qui n'ont soit pas de lien avec mon parcours professionnel soit qui n'ont pas aboutis.</h3>
+                <h3 className="font-bold">Car rien ne mérite d'être complétement abandonné.</h3>
+            </div>
 
             {showFilterOverlay && (
                 <div 

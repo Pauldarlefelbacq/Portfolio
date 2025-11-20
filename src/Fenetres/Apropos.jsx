@@ -13,12 +13,12 @@ const timeline = [
 	{
 		year: '2024 à ce jour',
 		title: 'BUT MMI',
-		description: 'Approfondissement des expériences immersives, UI/UX et prototypage avancé.',
+		description: 'Développement web orienté UI/UX, exploration des frameworks et vision plus en détail du déploiement web.',
 	},
 	{
 		year: '2021 à 2024',
 		title: 'Licence informatique',
-		description: 'Construction d’une application web responsive avec animations micro-interactions.',
+		description: 'Première approche du développement web (HTML/CSS/Javascript relativement simple) et exploration de langages de "bas niveau"(C) et autres (Java, Haskell).',
 	},
 ];
 
@@ -144,7 +144,6 @@ const Apropos = () => {
 				</p>
 			</header>
 
-			{/* Tabs - visible uniquement sur mobile */}
 			<div className="flex flex-wrap gap-3 md:hidden">
 				{tabs.map((tab) => (
 					<button
@@ -197,7 +196,7 @@ const Apropos = () => {
 								<h4 className="mb-3 text-sm font-semibold capitalize text-gray-700">{spe}</h4>
 								<div className="grid grid-cols-2 gap-2">
 									{speSkills.map((skill) => (
-										<div
+										<article
 											key={skill.id}
 											className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white p-2 hover:bg-gray-100"
 										>
@@ -210,7 +209,7 @@ const Apropos = () => {
 												<span className="block text-xs font-medium text-gray-700">{skill.nom}</span>
 												<span className="text-[10px] text-gray-500">{skill.maitrise}</span>
 											</div>
-										</div>
+										</article>
 									))}
 								</div>
 							</div>
@@ -218,7 +217,7 @@ const Apropos = () => {
 					</div>
 				</section>
 
-				<section className="rounded-3xl bg-white/60 p-6 shadow-lg backdrop-blur">
+				<section className="rounded-3xl bg-white/60 p-6 shadow-lg backdrop-blur overflow-auto">
 					<h3 className="mb-4 text-lg font-semibold text-gray-800">Valeurs</h3>
 					<div className="grid gap-4">
 						{values.map((value) => (

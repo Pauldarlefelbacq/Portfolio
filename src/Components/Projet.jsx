@@ -55,7 +55,7 @@ const Projet = ({ projet }) => {
                 ))}
             </div>
 
-            <div className="w-full md:w-3/5">
+            <div className="w-full md:w-3/5 overflow-auto">
                 <div className="flex flex-col md:flex-row justify-between mb-3.5 gap-4">
                     <div className="w-full md:max-w-[40%]">
                         <h2 className="text-2xl font-bold my-5 transition-colors duration-300" style={{ color: 'var(--text-primary)' }}>Technologies utilisées</h2>
